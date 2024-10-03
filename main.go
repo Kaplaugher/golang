@@ -20,6 +20,7 @@ func main() {
 
 	// New routes for Opportunity
 	e.GET("/opportunities/:id", handlers.GetOpportunity)
+	e.GET("/opportunities", handlers.GetOpportunities)
 	e.POST("/opportunities", handlers.CreateOpportunity)
 
 	// Start server

@@ -63,3 +63,27 @@ func CreateOpportunity(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, opportunity)
 }
+
+func GetOpportunities(c echo.Context) error {
+	// In a real application, you would fetch opportunities from a database
+	opportunities := []models.Opportunity{
+		{
+			ID:          1,
+			Name:        "Sample Opportunity 1",
+			Description: "This is a sample opportunity",
+			Client:      "ACME Corp",
+			Files:       []string{"file1.pdf", "file2.docx"},
+			Needs:       "Requires immediate attention",
+		},
+		{
+			ID:          2,
+			Name:        "Sample Opportunity 2",
+			Description: "Another sample opportunity",
+			Client:      "XYZ Inc",
+			Files:       []string{"document.pdf"},
+			Needs:       "Looking for innovative solutions",
+		},
+	}
+
+	return c.JSON(http.StatusOK, opportunities)
+}
