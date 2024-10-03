@@ -18,7 +18,6 @@ func GetOpportunity(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid opportunity ID")
 	}
 
-	// In a real application, you would fetch the opportunity from a database
 	opportunity := models.Opportunity{
 		ID:          id,
 		Name:        "Sample Opportunity",
@@ -58,14 +57,13 @@ func CreateOpportunity(c echo.Context) error {
 		opportunity.Files = append(opportunity.Files, file.Filename)
 	}
 
-	// In a real application, you would save the opportunity to a database and get an ID
 	opportunity.ID = 1 // Placeholder ID
 
 	return c.JSON(http.StatusCreated, opportunity)
 }
 
 func GetOpportunities(c echo.Context) error {
-	// In a real application, you would fetch opportunities from a database
+
 	opportunities := []models.Opportunity{
 		{
 			ID:          1,
