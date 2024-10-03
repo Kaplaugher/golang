@@ -20,7 +20,7 @@ func main() {
 
 	// New routes for Opportunity
 	e.GET("/opportunities/:id", handlers.GetOpportunity)
-	e.POST("/opportunities/:id/files", handlers.AddFilesToOpportunity)
+	e.POST("/opportunities", handlers.CreateOpportunity)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))

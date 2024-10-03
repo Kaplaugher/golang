@@ -31,25 +31,35 @@ func GetOpportunity(c echo.Context) error {
 	return c.JSON(http.StatusOK, opportunity)
 }
 
-func AddFilesToOpportunity(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
+func CreateOpportunity(c echo.Context) error {
+	// Parse the multipart form
+	err := c.Request().ParseMultipartForm(10 << 20) // 10 MB max memory
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid opportunity ID")
+		return echo.NewHTTPError(http.StatusBadRequest, "Failed to parse form")
 	}
 
-	var files struct {
-		Files []string `json:"files"`
+	// Extract opportunity data
+	opportunity := models.Opportunity{
+		Name:        c.FormValue("name"),
+		Description: c.FormValue("description"),
+		Client:      c.FormValue("client"),
+		Needs:       c.FormValue("needs"),
 	}
 
-	if err := c.Bind(&files); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	// Handle file uploads
+	form, err := c.MultipartForm()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Failed to get multipart form")
 	}
 
-	// In a real application, you would update the opportunity in the database
-	// For this example, we'll just return the files that would be added
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message":       "Files added successfully",
-		"opportunityId": id,
-		"addedFiles":    files.Files,
-	})
+	files := form.File["files"]
+	for _, file := range files {
+		// In a real application, you would save the file and store its path
+		opportunity.Files = append(opportunity.Files, file.Filename)
+	}
+
+	// In a real application, you would save the opportunity to a database and get an ID
+	opportunity.ID = 1 // Placeholder ID
+
+	return c.JSON(http.StatusCreated, opportunity)
 }
